@@ -1,0 +1,3 @@
+.vscode
+vendor
+database_credentials.php

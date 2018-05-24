@@ -1,0 +1,7 @@
+body {
+    padding-top: 4.5rem;
+    background-color: #eee;
+}
+.borderless td, .borderless th {
+    border: none;
+}
