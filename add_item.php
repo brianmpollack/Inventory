@@ -32,6 +32,9 @@ require_once('Controller/create_item.php');
                         <li class="nav-item">
                             <a class="nav-link" href="cables.php">Cables</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="actions.php">Actions</a>
+                        </li>
                     </ul>
                     <!-- <form class="form-inline mt-2 mt-md-0" method="post" action="">
                         <button class="btn btn-outline-light my-2 my-sm-0" type="submit" name="submit" value="clear_storage">Clear Active Storage</button>

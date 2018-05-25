@@ -54,7 +54,7 @@ $all_locations = Location::retrieveAllFromDatabase();
                 <div class="form-group">
                     <select class="form-control" name="location_id" id="location_id">
                         <?php foreach($all_locations as $location): ?>
-                        <option value="<?php echo $location->getID(); ?>"><?php echo $location->getName();?></option>
+                        <option value="<?php echo $location->getID(); ?>" <?php if(isset($prefill_location_id) && $prefill_location_id == $location->getID()): ?>selected<?php endif; ?>><?php echo $location->getName();?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -69,6 +69,7 @@ $all_locations = Location::retrieveAllFromDatabase();
         <script src="vendor/bootstrap-4.1.1-dist/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
         <script>
             $(document).ready(function() {
+                $("#item_id").focus();
                 var itemTimeoutID = null;
                 var cableTimeoutID = null;
                 function findMemberItem(str) {

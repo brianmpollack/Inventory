@@ -64,6 +64,7 @@ require_once('Controller/connect_item_and_cable.php');
         <script src="vendor/bootstrap-4.1.1-dist/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
         <script>
             $(document).ready(function() {
+                $("#item_id").focus();
                 var itemTimeoutID = null;
                 var cableTimeoutID = null;
                 function findMemberItem(str) {
