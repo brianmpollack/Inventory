@@ -46,7 +46,7 @@ require_once('Controller/view_cable.php');
                 <div class="form-group">
                     <label for="cable_id">Cable ID</label>
                     <input type="text" class="form-control" id="cable_id" aria-describedby="cable_id_help" placeholder="Cable ID" maxlength="4" value="<?php if(isset($prefill_cable_id)) echo $prefill_cable_id; ?>" disabled>
-                    <small id="cable_id_help" class="form-text text-muted">Four digit hexidecimal.</small>
+                    <small id="cable_id_help" class="form-text text-muted">Four digit hexadecimal.</small>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
