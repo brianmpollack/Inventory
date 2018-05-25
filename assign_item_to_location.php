@@ -34,7 +34,7 @@ $all_locations = Location::retrieveAllFromDatabase();
                             <a class="nav-link" href="cables.php">Cables</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="bulk-actions.php">Bulk Actions <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="actions.php">Actions <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
@@ -46,7 +46,7 @@ $all_locations = Location::retrieveAllFromDatabase();
                 <p><?php echo $user_error; ?></p>
             </div>
             <?php endif; ?>
-            <h2>Connect Item and Cable</h2>
+            <h2>Assign Item to Location</h2>
             <form method="post" action="" class="form-inline">
                 <div class="form-group">
                     <input type="text" class="form-control mr-sm-2" id="item_id" name="item_id" aria-describedby="item_id_help" placeholder="Item ID" maxlength="6" value="<?php if(isset($prefill_item_id)) echo $prefill_item_id; ?>" required>

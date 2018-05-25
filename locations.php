@@ -32,6 +32,9 @@ $all_locations = Location::retrieveAllFromDatabase();
                         <li class="nav-item">
                             <a class="nav-link" href="cables.php">Cables</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="actions.php">Actions</a>
+                        </li>
                     </ul>
                 </div>
             </div>

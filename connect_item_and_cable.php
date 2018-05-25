@@ -32,7 +32,7 @@ require_once('Controller/connect_item_and_cable.php');
                             <a class="nav-link" href="cables.php">Cables</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="bulk-actions.php">Bulk Actions <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="actions.php">Actions <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
