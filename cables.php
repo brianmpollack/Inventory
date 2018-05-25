@@ -10,6 +10,7 @@ $all_cables = Cable::retrieveAllFromDatabase();
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="vendor/bootstrap-4.1.1-dist/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="vendor/DataTables/datatables.min.css"/>
         <link rel="stylesheet" href="items.css">
         <title>List Cables</title>
     </head>
@@ -38,7 +39,7 @@ $all_cables = Cable::retrieveAllFromDatabase();
         <div class="container">
             <h2>Cables</h2>
             <form method="post" action="">
-                <table class="table">
+                <table class="table" id="dataTable">
                     <thead>
                         <tr>
                             <th>Cable ID</th>
@@ -70,5 +71,11 @@ $all_cables = Cable::retrieveAllFromDatabase();
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="vendor/bootstrap-4.1.1-dist/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="vendor/DataTables/datatables.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#dataTable').DataTable();
+            } );
+        </script>
     </body>
 </html>

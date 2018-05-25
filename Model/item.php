@@ -148,4 +148,18 @@ class Item {
     function setNotes($notes) {
         $this->notes = $notes;
     }
+
+    static function searchForItem($query) {
+        $items = array();
+        $database = Database::createConnection();
+        $packed_query = pack("H*", $query);
+        $stmt = $database->prepare("SELECT `inventory_id`, `description` FROM `items` WHERE `inventory_id` LIKE '%$packed_query%'");
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($inventory_id, $description);
+        while($stmt->fetch()) {
+            $items[] = [Item::unpack($inventory_id), $description];
+        }
+        return $items;
+    }
 }

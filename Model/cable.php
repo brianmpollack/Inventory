@@ -119,4 +119,18 @@ class Cable {
     function setNotes($notes) {
         $this->notes = $notes;
     }
+
+    static function searchForCable($query) {
+        $cables = array();
+        $database = Database::createConnection();
+        $packed_query = pack("H*", $query);
+        $stmt = $database->prepare("SELECT `cable_id`, `description` FROM `cables` WHERE `cable_id` LIKE '%$packed_query%'");
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id, $description);
+        while($stmt->fetch()) {
+            $cables[] = [Cable::unpack($id), $description];
+        }
+        return $cables;
+    }
 }
