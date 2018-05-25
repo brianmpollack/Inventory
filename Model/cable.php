@@ -74,6 +74,7 @@ class Cable {
             if(!$stmt->execute()) {
                 throw new Exception('Could not execute MySQL query.');
             }
+            return $id;
         } else{
             $max_insertion_tries = 10;
             do {
@@ -91,7 +92,7 @@ class Cable {
                 $stmt->fetch();
 
                 $stmt = $database->prepare("INSERT INTO `cables` (`cable_id`, `description`, `notes`) VALUES (?, ?, ?)");
-                $stmt->bind_param("sss", Item::pad_and_pack($next_id), $description, $notes);
+                $stmt->bind_param("sss", Cable::pad_and_pack($next_id), $description, $notes);
 
                 $max_insertion_tries --;
             }
@@ -99,6 +100,7 @@ class Cable {
             if($stmt->error != '') {
                 throw new Exception('Could not create cable. MySQL error: '.$stmt->error);
             }
+            return $next_id;
         }
     }
 

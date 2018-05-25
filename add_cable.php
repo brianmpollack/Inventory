@@ -49,12 +49,12 @@ require_once('Controller/create_cable.php');
             <form method="post" action="">
                 <div class="form-group">
                     <label for="cable_id">Cable ID</label>
-                    <input type="text" class="form-control" id="cable_id" name="cable_id" aria-describedby="cable_id_help" placeholder="Cable ID" maxlength="4" value="<?php if(isset($prefill_cable_id)) echo $prefill_cable_id; ?>">
+                    <input type="text" class="form-control enter-to-tab" id="cable_id" name="cable_id" aria-describedby="cable_id_help" placeholder="Cable ID" maxlength="4" value="<?php if(isset($prefill_cable_id)) echo $prefill_cable_id; ?>">
                     <small id="cable_id_help" class="form-text text-muted">Four digit hexadecimal. Leave blank to generate automatically.</small>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" name="description" aria-describedby="description_help" placeholder="Description" value="<?php if(isset($prefill_description)) echo $prefill_description; ?>" required>
+                    <input type="text" class="form-control enter-to-tab" id="description" name="description" aria-describedby="description_help" placeholder="Description" value="<?php if(isset($prefill_description)) echo $prefill_description; ?>" required>
                     <small id="description_help" class="form-text text-muted"><!--Short description of item.--></small>
                 </div>
                 <div class="form-group">
@@ -67,5 +67,6 @@ require_once('Controller/create_cable.php');
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="vendor/bootstrap-4.1.1-dist/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="enter_to_tab.js"></script>
     </body>
 </html>

@@ -11,7 +11,8 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'new-cable') {
     }
 
     try {
-        Cable::createCable($cable_id, $description, $notes);
+        $id = Cable::createCable($cable_id, $description, $notes);
+        header("Location: ./view_cable.php?id=".$id);
     } catch(Exception $e) {
         $user_error = "Could not create cable.<br>".$e->getMessage();
     }
