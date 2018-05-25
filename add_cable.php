@@ -1,8 +1,9 @@
 <?php
 require_once('Controller/validate_logged_in.php');
-require_once('Model/item.php');
+require_once('Model/cable.php');
+require_once('Controller/create_cable.php');
 
-$all_items = Item::retrieveAllItemsFromDatabase();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -11,7 +12,7 @@ $all_items = Item::retrieveAllItemsFromDatabase();
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="vendor/bootstrap-4.1.1-dist/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" href="items.css">
-        <title>List Items</title>
+        <title>Add Cable</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -22,49 +23,42 @@ $all_items = Item::retrieveAllItemsFromDatabase();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="items.php">Items <span class="sr-only">(current)</span></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="items.php">Items</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="locations.php">Locations</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="cables.php">Cables</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="cables.php">Cables <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
-            <h2>List Items</h2>
+            <?php if(isset($user_error) && $user_error != ''): ?>
+            <div class="alert alert-danger">
+                <p><?php echo $user_error; ?></p>
+            </div>
+            <?php endif; ?>
+            <h2>Add Cable</h2>
             <form method="post" action="">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Inventory ID</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach($all_items as $item): ?>
-                        <tr>
-                            <td>
-                                <a href="./view_item.php?inventory_id=<?php echo urlencode($item->getInventoryID()); ?>"><?php echo $item->getInventoryID(); ?></a>
-                            </td>
-                            <td>
-                                <a href="./view_item.php?inventory_id=<?php echo urlencode($item->getInventoryID()); ?>"><?php echo $item->getDescription(); ?></a>
-                            </td>
-                        </tr>
-                    
-                    <?php endforeach; ?>
-                        <tr>
-                            <td>
-                                <a href="./add_item.php" class="btn btn-info">Add Item</a>   
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="form-group">
+                    <label for="cable_id">Cable ID</label>
+                    <input type="text" class="form-control" id="cable_id" name="cable_id" aria-describedby="cable_id_help" placeholder="Cable ID" maxlength="4" value="<?php if(isset($prefill_cable_id)) echo $prefill_cable_id; ?>">
+                    <small id="cable_id_help" class="form-text text-muted">Four digit hexidecimal. Leave blank to generate automatically.</small>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" aria-describedby="description_help" placeholder="Description" value="<?php if(isset($prefill_description)) echo $prefill_description; ?>" required>
+                    <small id="description_help" class="form-text text-muted"><!--Short description of item.--></small>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes" rows="5"><?php if(isset($prefill_notes)) echo $prefill_notes; ?></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" name="submit" value="new-cable">Save</button>
             </form>
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -3,7 +3,6 @@ require_once('Controller/validate_logged_in.php');
 require_once('Model/item.php');
 require_once('Controller/save_item.php');
 require_once('Controller/view_item.php');
-$inventory_id_disable = true;
 
 ?>
 <!doctype html>
@@ -13,7 +12,7 @@ $inventory_id_disable = true;
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="vendor/bootstrap-4.1.1-dist/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" href="items.css">
-        <title>Add Item</title>
+        <title>View Item</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -43,7 +42,7 @@ $inventory_id_disable = true;
                 <p><?php echo $user_error; ?></p>
             </div>
             <?php endif; ?>
-            <h2>Add Item</h2>
+            <h2>View Item</h2>
             <form method="post" action="">
                 <div class="form-group">
                     <label for="inventory_id">Inventory ID</label>

@@ -1,8 +1,8 @@
 <?php
 require_once('Controller/validate_logged_in.php');
-require_once('Model/item.php');
+require_once('Model/cable.php');
 
-$all_items = Item::retrieveAllItemsFromDatabase();
+$all_cables = Cable::retrieveAllFromDatabase();
 ?>
 <!doctype html>
 <html lang="en">
@@ -11,7 +11,7 @@ $all_items = Item::retrieveAllItemsFromDatabase();
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="vendor/bootstrap-4.1.1-dist/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" href="items.css">
-        <title>List Items</title>
+        <title>List Cables</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -22,44 +22,44 @@ $all_items = Item::retrieveAllItemsFromDatabase();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="items.php">Items <span class="sr-only">(current)</span></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="items.php">Items</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="locations.php">Locations</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="cables.php">Cables</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="cables.php">Cables <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
-            <h2>List Items</h2>
+            <h2>Cables</h2>
             <form method="post" action="">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Inventory ID</th>
+                            <th>Cable ID</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($all_items as $item): ?>
+                    <?php foreach($all_cables as $cable): ?>
                         <tr>
                             <td>
-                                <a href="./view_item.php?inventory_id=<?php echo urlencode($item->getInventoryID()); ?>"><?php echo $item->getInventoryID(); ?></a>
+                                <a href="./view_cable.php?id=<?php echo urlencode($cable->getID()); ?>"><?php echo $cable->getID(); ?></a>
                             </td>
                             <td>
-                                <a href="./view_item.php?inventory_id=<?php echo urlencode($item->getInventoryID()); ?>"><?php echo $item->getDescription(); ?></a>
+                                <a href="./view_cable.php?id=<?php echo urlencode($cable->getID()); ?>"><?php echo $cable->getDescription(); ?></a>
                             </td>
                         </tr>
                     
                     <?php endforeach; ?>
                         <tr>
                             <td>
-                                <a href="./add_item.php" class="btn btn-info">Add Item</a>   
+                                <a href="./add_cable.php" class="btn btn-info">Add Cable</a>   
                             </td>
                             <td></td>
                         </tr>
