@@ -82,6 +82,7 @@ class Item {
             if(!$stmt->execute()) {
                 throw new Exception('Could not execute MySQL query.');
             }
+            return $inventory_id;
         } else{
             $max_insertion_tries = 10;
             do {
@@ -107,6 +108,7 @@ class Item {
             if($stmt->error != '') {
                 throw new Exception('Could not create item. MySQL error: '.$stmt->error);
             }
+            return $next_inventory_id;
         }
     }
 

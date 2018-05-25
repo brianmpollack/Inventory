@@ -14,7 +14,8 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'new-item') {
     }
 
     try {
-        Item::createItem($inventory_id, $description, $model_number, $serial_number, $mac_address, $notes);
+        $inventory_id = Item::createItem($inventory_id, $description, $model_number, $serial_number, $mac_address, $notes);
+        header("Location: ./view_item.php?inventory_id=".$inventory_id);
     } catch(Exception $e) {
         $user_error = "Could not create item.<br>".$e->getMessage();
     }
