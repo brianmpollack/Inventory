@@ -1,7 +1,9 @@
 <?php
 require_once('Controller/validate_logged_in.php');
-require_once('Controller/connect_item_and_cable.php');
+require_once('Model/location.php');
+require_once('Controller/assign_item_to_location.php');
 
+$all_locations = Location::retrieveAllFromDatabase();
 
 ?>
 <!doctype html>
@@ -11,7 +13,7 @@ require_once('Controller/connect_item_and_cable.php');
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="vendor/bootstrap-4.1.1-dist/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" href="items.css">
-        <title>Connect Cable</title>
+        <title>Assign Item to Location</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -50,13 +52,16 @@ require_once('Controller/connect_item_and_cable.php');
                     <input type="text" class="form-control mr-sm-2" id="item_id" name="item_id" aria-describedby="item_id_help" placeholder="Item ID" maxlength="6" value="<?php if(isset($prefill_item_id)) echo $prefill_item_id; ?>" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control mr-sm-2" id="cable_id" name="cable_id" aria-describedby="cable_id_help" placeholder="Cable ID" maxlength="4" value="<?php if(isset($prefill_cable_id)) echo $prefill_cable_id; ?>" required>
+                    <select class="form-control" name="location_id" id="location_id">
+                        <?php foreach($all_locations as $location): ?>
+                        <option value="<?php echo $location->getID(); ?>"><?php echo $location->getName();?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <button type="submit" class="btn btn-primary" name="submit" value="save-item-cable">Save</button>
+                <button type="submit" class="btn btn-primary" name="submit" value="save-item-location">Save</button>
             </form>
             <div class="row">
                 <div class="col-md-6" id="item"></div>
-                <div class="col-md-6" id="cable"></div>
             </div>
         </div>
         <script src="vendor/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
@@ -89,33 +94,9 @@ require_once('Controller/connect_item_and_cable.php');
                     }
                 }
 
-                function findMemberCable(str) {
-                    if(str.length == 4) {
-                        $.ajax({
-                            dataType: "json",
-                            url: './lookup_cable_handler.php?id='+str,
-                            success: function(result) {
-                                $('#cable').append('<h3>Cable</h3>');
-                                $('#cable').append('<h5>ID: '+result['cable']['id']+'</h5>');
-                                $('#cable').append('<p>Description: '+result['cable']['description']+'</p>');
-                                $('#cable').append('<p>Notes: '+result['cable']['notes']+'</p>');
-                            },
-                            error: function() {
-                                $('#cable').empty();
-                            }
-                        });
-                    } else {
-                        $('#cable').empty();
-                    }
-                }
-
                 $('#item_id').keyup(function(e) {
                     clearTimeout(itemTimeoutID);
                     itemTimeoutID = setTimeout(() => findMemberItem(e.target.value), 500);
-                });
-                $('#cable_id').keyup(function(e) {
-                    clearTimeout(cableTimeoutID);
-                    cableTimeoutID = setTimeout(() => findMemberCable(e.target.value), 500);
                 });
             });
         </script>
