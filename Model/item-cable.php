@@ -50,6 +50,34 @@ class ItemCable {
         return $items_cables;
     }
 
+    static function getAllWithItem($item_inventory_id) {
+        $items_cables = array();
+        $database = Database::createConnection();
+        $stmt = $database->prepare("SELECT `link_id` FROM `items_cables` WHERE `item_inventory_id`=?");
+        $stmt->bind_param("s", ItemCable::pad_and_pack($item_inventory_id));
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id);
+        while($stmt->fetch()) {
+            $items_cables[] = ItemCable::retrieveFromDatabase($id);
+        }
+        return $items_cables;
+    }
+
+    static function getAllWithCable($cable_id) {
+        $items_cables = array();
+        $database = Database::createConnection();
+        $stmt = $database->prepare("SELECT `link_id` FROM `items_cables` WHERE `cable_id`=?");
+        $stmt->bind_param("s", ItemCable::pad_and_pack($cable_id));
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id);
+        while($stmt->fetch()) {
+            $items_cables[] = ItemCable::retrieveFromDatabase($id);
+        }
+        return $items_cables;
+    }
+
     static function create($item_inventory_id, $cable_id) {
         $database = Database::createConnection();
         $stmt = $database->prepare("INSERT INTO `items_cables` (`item_inventory_id`, `cable_id`) VALUES (?, ?)");
