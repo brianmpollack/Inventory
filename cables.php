@@ -35,12 +35,16 @@ $all_cables = Cable::retrieveAllFromDatabase();
                         <li class="nav-item">
                             <a class="nav-link" href="actions.php">Actions</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search.php">Search</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
             <h2>Cables</h2>
+            <a href="./add_cable.php" class="btn btn-info mb-2">Add Cable</a> 
             <form method="post" action="">
                 <table class="table" id="dataTable">
                     <thead>
@@ -61,12 +65,6 @@ $all_cables = Cable::retrieveAllFromDatabase();
                         </tr>
                     
                     <?php endforeach; ?>
-                        <tr>
-                            <td>
-                                <a href="./add_cable.php" class="btn btn-info">Add Cable</a>   
-                            </td>
-                            <td></td>
-                        </tr>
                     </tbody>
                 </table>
             </form>

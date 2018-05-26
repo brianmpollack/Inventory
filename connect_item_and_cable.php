@@ -34,6 +34,9 @@ require_once('Controller/connect_item_and_cable.php');
                         <li class="nav-item active">
                             <a class="nav-link" href="actions.php">Actions <span class="sr-only">(current)</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search.php">Search</a>
+                        </li>
                     </ul>
                 </div>
             </div>

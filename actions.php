@@ -31,13 +31,16 @@ require_once('Controller/validate_logged_in.php');
                         <li class="nav-item active">
                             <a class="nav-link" href="actions.php">Actions <span class="sr-only">(current)</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search.php">Search</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
             <h2>Actions</h2>
-            <ul>
+            <ul class="list-unstyled">
                 <li><a href="./assign_item_to_location.php">Assign Item to Location</a></li>
                 <li><a href="./connect_item_and_cable.php">Connect Item and Cable</a></li>
             </ul>

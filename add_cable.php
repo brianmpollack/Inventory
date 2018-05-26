@@ -35,6 +35,9 @@ require_once('Controller/create_cable.php');
                         <li class="nav-item">
                             <a class="nav-link" href="actions.php">Actions</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search.php">Search</a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -35,12 +35,16 @@ $all_items = Item::retrieveAllItemsFromDatabase();
                         <li class="nav-item">
                             <a class="nav-link" href="actions.php">Actions</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search.php">Search</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
             <h2>List Items</h2>
+            <a href="./add_item.php" class="btn btn-info mb-2">Add Item</a>
             <form method="post" action="">
                 <table class="table" id="dataTable">
                     <thead>
@@ -61,12 +65,6 @@ $all_items = Item::retrieveAllItemsFromDatabase();
                         </tr>
                     
                     <?php endforeach; ?>
-                        <tr>
-                            <td>
-                                <a href="./add_item.php" class="btn btn-info">Add Item</a>   
-                            </td>
-                            <td></td>
-                        </tr>
                     </tbody>
                 </table>
             </form>

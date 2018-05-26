@@ -35,12 +35,16 @@ $all_locations = Location::retrieveAllFromDatabase();
                         <li class="nav-item">
                             <a class="nav-link" href="actions.php">Actions</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search.php">Search</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
             <h2>Locations</h2>
+            <a href="./add_location.php" class="btn btn-info mb-2">New Location</a> 
             <form method="post" action="">
                 <table class="table" id="dataTable">
                     <thead>
@@ -57,12 +61,6 @@ $all_locations = Location::retrieveAllFromDatabase();
                         </tr>
                     
                     <?php endforeach; ?>
-                        <tr>
-                            <td>
-                                <a href="./add_location.php" class="btn btn-info">New Location</a>   
-                            </td>
-                            <td></td>
-                        </tr>
                     </tbody>
                 </table>
             </form>

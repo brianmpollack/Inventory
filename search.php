@@ -31,6 +31,12 @@ require_once('Controller/view_cable.php');
                         <li class="nav-item">
                             <a class="nav-link" href="cables.php">Cables</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="actions.php">Actions</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="search.php">Search <span class="sr-only">(current)</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
