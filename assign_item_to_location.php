@@ -104,5 +104,6 @@ $all_locations = Location::retrieveAllFromDatabase();
                 });
             });
         </script>
+        <script src="disable_enter.js"></script>
     </body>
 </html>

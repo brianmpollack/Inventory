@@ -123,5 +123,6 @@ require_once('Controller/connect_item_and_cable.php');
                 });
             });
         </script>
+        <script src="disable_enter.js"></script>
     </body>
 </html>

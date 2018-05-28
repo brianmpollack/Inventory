@@ -78,5 +78,6 @@ $all_cables = Cable::retrieveAllFromDatabase();
                 $('#dataTable').DataTable();
             } );
         </script>
+        <script src="disable_enter.js"></script>
     </body>
 </html>

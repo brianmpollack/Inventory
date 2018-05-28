@@ -74,5 +74,6 @@ $all_locations = Location::retrieveAllFromDatabase();
                 $('#dataTable').DataTable();
             } );
         </script>
+        <script src="disable_enter.js"></script>
     </body>
 </html>

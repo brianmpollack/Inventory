@@ -114,5 +114,6 @@ require_once('Controller/view_cable.php');
                 }
             });
         </script>
+        <script src="disable_enter.js"></script>
     </body>
 </html>
