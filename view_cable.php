@@ -5,8 +5,10 @@ require_once('Model/item.php');
 require_once('Controller/save_cable.php');
 require_once('Controller/view_cable.php');
 $connected_items = array();
+$connected_cables = array();
 if(isset($cable)) {
     $connected_items = Item::getItemsConnectedToCable($cable->getID());
+    $connected_cables = Cable::getCablesConnectedToCable($cable->getID());
 }
 ?>
 <!doctype html>
@@ -86,8 +88,36 @@ if(isset($cable)) {
                             <td><a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getDescription(); ?></a></td>
                         </tr>
                     <?php endforeach; ?>
+                    <?php foreach($connected_cables as $connected_cable): ?>
+                        <?php $connected_items_from_connected_cable = Item::getItemsConnectedToCable($connected_cable->getID()); ?>
+                        <?php foreach($connected_items_from_connected_cable as $connected_item): ?>
+                            <tr>
+                                <td><a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getInventoryID(); ?> </a>(via Cable <a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getID(); ?></a>)</td>
+                                <td><a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getDescription(); ?></a></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php if(count($connected_cables) > 0): ?>
+            <h3>Connected Cables</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($connected_cables as $connected_cable): ?>
+                    <tr>
+                        <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getID(); ?></a></td>
+                        <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getDescription(); ?></a></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

@@ -135,4 +135,19 @@ class Cable {
         }
         return $cables;
     }
+
+    static function getCablesConnectedToCable($cable_id) {
+        $arr = array();
+        $database = Database::createConnection();
+        $stmt = $database->prepare("(SELECT `cable_id_2` FROM `cables_cables` WHERE `cable_id_1`=?) UNION (SELECT `cable_id_1` FROM `cables_cables` WHERE `cable_id_2`=?)");
+        $cable_id = pack("H*", str_pad($cable_id, 4, "0", STR_PAD_LEFT));
+        $stmt->bind_param("ss", $cable_id, $cable_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id);
+        while($stmt->fetch()) {
+            $arr[] = Cable::retrieveFromDatabase(Cable::unpack($id));
+        }
+        return $arr;
+    }
 }

@@ -82,7 +82,9 @@ class ItemCable {
     static function create($item_inventory_id, $cable_id) {
         $database = Database::createConnection();
         $stmt = $database->prepare("INSERT INTO `items_cables` (`item_inventory_id`, `cable_id`) VALUES (?, ?)");
-        $stmt->bind_param("ss", ItemCable::pad_and_pack($item_inventory_id), ItemCable::pad_and_pack($cable_id));
+        $item_inventory_id = ItemCable::pad_and_pack($item_inventory_id);
+        $cable_id = ItemCable::pad_and_pack($cable_id);
+        $stmt->bind_param("ss", $item_inventory_id, $cable_id);
         if(!$stmt->execute()) {
             throw new Exception('Could not execute MySQL query.');
         }
