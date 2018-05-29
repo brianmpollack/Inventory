@@ -164,4 +164,19 @@ class Item {
         }
         return $items;
     }
+
+    static function getItemsConnectedToCable($cable_id) {
+        $arr = array();
+        $database = Database::createConnection();
+        $stmt = $database->prepare("SELECT `item_inventory_id` FROM `items_cables` WHERE `cable_id`=?");
+        $cable_id = pack("H*", str_pad($cable_id, 4, "0", STR_PAD_LEFT));
+        $stmt->bind_param("s", $cable_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id);
+        while($stmt->fetch()) {
+            $arr[] = Item::retrieveFromDatabase(Item::unpack($id));
+        }
+        return $arr;
+    }
 }

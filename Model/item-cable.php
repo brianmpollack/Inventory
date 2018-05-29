@@ -54,7 +54,8 @@ class ItemCable {
         $items_cables = array();
         $database = Database::createConnection();
         $stmt = $database->prepare("SELECT `link_id` FROM `items_cables` WHERE `item_inventory_id`=?");
-        $stmt->bind_param("s", ItemCable::pad_and_pack($item_inventory_id));
+        $item_inventory_id = ItemCable::pad_and_pack($item_inventory_id);
+        $stmt->bind_param("s", $item_inventory_id);
         $stmt->execute();
         $stmt->store_result();
         $stmt->bind_result($id);

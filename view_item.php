@@ -52,6 +52,7 @@ require_once('Controller/view_item.php');
                 <div class="form-group">
                     <label for="inventory_id">Inventory ID</label>
                     <input type="text" class="form-control" id="inventory_id" name="inventory_id" aria-describedby="inventory_id_help" placeholder="Inventory ID" maxlength="6" value="<?php if(isset($prefill_inventory_id)) echo $prefill_inventory_id; ?>" disabled>
+                    <input type="hidden" name="inventory_id" value="<?php if(isset($prefill_inventory_id)) echo $prefill_inventory_id; ?>">
                     <small id="inventory_id_help" class="form-text text-muted">Six digit hexadecimal.</small>
                 </div>
                 <div class="form-group">

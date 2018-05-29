@@ -1,8 +1,13 @@
 <?php
 require_once('Controller/validate_logged_in.php');
 require_once('Model/cable.php');
+require_once('Model/item.php');
 require_once('Controller/save_cable.php');
 require_once('Controller/view_cable.php');
+$connected_items = array();
+if(isset($cable)) {
+    $connected_items = Item::getItemsConnectedToCable($cable->getID());
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -66,6 +71,23 @@ require_once('Controller/view_cable.php');
                 <input type="hidden" name="cable_id" value="<?php echo $prefill_cable_id; ?>">
                 <button type="submit" class="btn btn-primary" name="submit" value="save-cable">Save</button>
             </form>
+            <h3>Connected Items</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($connected_items as $connected_item): ?>
+                        <tr>
+                            <td><a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getInventoryID(); ?></a></td>
+                            <td><a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getDescription(); ?></a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
