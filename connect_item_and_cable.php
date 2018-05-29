@@ -50,7 +50,7 @@ require_once('Controller/connect_item_and_cable.php');
             <h2>Connect Item and Cable</h2>
             <form method="post" action="" class="form-inline">
                 <div class="form-group">
-                    <input type="text" class="form-control mr-sm-2" id="item_id" name="item_id" aria-describedby="item_id_help" placeholder="Item ID" maxlength="6" value="<?php if(isset($prefill_item_id)) echo $prefill_item_id; ?>" required>
+                    <input type="text" class="form-control mr-sm-2" id="item_id" name="item_id" aria-describedby="item_id_help" placeholder="Item ID" maxlength="6" value="<?php if(isset($prefill_item_id)) echo $prefill_item_id; ?>" required autofocus>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control mr-sm-2" id="cable_id" name="cable_id" aria-describedby="cable_id_help" placeholder="Cable ID" maxlength="4" value="<?php if(isset($prefill_cable_id)) echo $prefill_cable_id; ?>" required>
@@ -76,6 +76,7 @@ require_once('Controller/connect_item_and_cable.php');
                             dataType: "json",
                             url: './lookup_item_handler.php?id='+str,
                             success: function(result) {
+                                $('#item').empty();
                                 $('#item').append('<h3>Item</h3>');
                                 $('#item').append('<h5>ID: '+result['item']['inventory_id']+'</h5>');
                                 $('#item').append('<p>Description: '+result['item']['description']+'</p>');
@@ -83,6 +84,7 @@ require_once('Controller/connect_item_and_cable.php');
                                 $('#item').append('<p>Serial Number: '+result['item']['serial_number']+'</p>');
                                 $('#item').append('<p>MAC Address: '+result['item']['mac_address']+'</p>');
                                 $('#item').append('<p>Notes: '+result['item']['notes']+'</p>');
+                                $('#cable_id').focus();
                             },
                             error: function() {
                                 $('#item').empty();
@@ -99,6 +101,7 @@ require_once('Controller/connect_item_and_cable.php');
                             dataType: "json",
                             url: './lookup_cable_handler.php?id='+str,
                             success: function(result) {
+                                $('#cable').empty();
                                 $('#cable').append('<h3>Cable</h3>');
                                 $('#cable').append('<h5>ID: '+result['cable']['id']+'</h5>');
                                 $('#cable').append('<p>Description: '+result['cable']['description']+'</p>');

@@ -50,7 +50,7 @@ require_once('Controller/view_cable.php');
             <h2>Search</h2>
             <form method="post" action="" class="form-inline">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="search" name="search" placeholder="Item or Cable ID">
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Item or Cable ID" autofocus>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" name="submit" value="search">Search</button>

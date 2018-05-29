@@ -52,7 +52,7 @@ $all_locations = Location::retrieveAllFromDatabase();
             <h2>Assign Item to Location</h2>
             <form method="post" action="" class="form-inline">
                 <div class="form-group">
-                    <input type="text" class="form-control mr-sm-2" id="item_id" name="item_id" aria-describedby="item_id_help" placeholder="Item ID" maxlength="6" value="<?php if(isset($prefill_item_id)) echo $prefill_item_id; ?>" required>
+                    <input type="text" class="form-control mr-sm-2" id="item_id" name="item_id" aria-describedby="item_id_help" placeholder="Item ID" maxlength="6" value="<?php if(isset($prefill_item_id)) echo $prefill_item_id; ?>" required autofocus>
                 </div>
                 <div class="form-group">
                     <select class="form-control" name="location_id" id="location_id">
@@ -72,7 +72,6 @@ $all_locations = Location::retrieveAllFromDatabase();
         <script src="vendor/bootstrap-4.1.1-dist/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
         <script>
             $(document).ready(function() {
-                $("#item_id").focus();
                 var itemTimeoutID = null;
                 var cableTimeoutID = null;
                 function findMemberItem(str) {
