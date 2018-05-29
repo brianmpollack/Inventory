@@ -83,8 +83,6 @@ require_once('Controller/view_item.php');
                 <button type="submit" class="btn btn-primary" name="submit" value="save-item">Save</button>
             </form>
             <?php if(isset($connected_cables)): ?>
-
-            <?php endif; ?>
             <h3>Connected Cables</h3>
             <table class="table">
                 <thead>
@@ -112,6 +110,7 @@ require_once('Controller/view_item.php');
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php endif; ?>
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

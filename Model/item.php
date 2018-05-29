@@ -189,4 +189,18 @@ class Item {
 
         return $arr;
     }
+
+    static function getAllItemsInLocation($location_id) {
+        $items = array();
+        $database = Database::createConnection();
+        $stmt = $database->prepare("SELECT `item_inventory_id` FROM `items_locations` WHERE `location_id`=?");
+        $stmt->bind_param("s", $location_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($inventory_id);
+        while($stmt->fetch()) {
+            $items[] = Item::retrieveFromDatabase(Item::unpack($inventory_id));
+        }
+        return $items;
+    }
 }
