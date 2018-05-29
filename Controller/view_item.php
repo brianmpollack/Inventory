@@ -9,6 +9,10 @@ if(isset($_GET['inventory_id'])) {
         $prefill_serial = $item->getSerialNumber();
         $prefill_mac_address = $item->getMacAddress();
         $prefill_notes = $item->getNotes();
-        $cable_connections = ItemCable::getAllWithItem($item->getInventoryID());
+        $items_cables = ItemCable::getAllWithItem($item->getInventoryID());
+        $connected_cables = array();
+        foreach($items_cables as $item_cable) {
+            $connected_cables[] = Cable::retrieveFromDatabase($item_cable->getCableID());
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 require_once('Controller/validate_logged_in.php');
 require_once('Model/item.php');
+require_once('Model/cable.php');
 require_once('Controller/save_item.php');
 require_once('Controller/view_item.php');
 ?>
@@ -81,14 +82,36 @@ require_once('Controller/view_item.php');
                 </div>
                 <button type="submit" class="btn btn-primary" name="submit" value="save-item">Save</button>
             </form>
+            <?php if(isset($connected_cables)): ?>
+
+            <?php endif; ?>
             <h3>Connected Cables</h3>
-            <ul>
-                <?php foreach($cable_connections as $cable_connection): ?>
-                    <li>
-                        <a href="./view_cable.php?id=<?php echo urlencode($cable_connection->getCableID()); ?>"><?php echo $cable_connection->getCableID(); ?></a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Connected Items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($connected_cables as $connected_cable): ?>
+                    <tr>
+                        <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getID(); ?></a></td>
+                        <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getDescription(); ?></a></td>
+                        <td>
+                            <?php $connected_items = Item::getItemsConnectedToCable($connected_cable->getID()); ?>
+                            <?php foreach($connected_items as $connected_item): ?>
+                            <?php if($connected_item->getInventoryID() != $item->getInventoryID()): ?>
+                            <a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getDescription(); ?></a>
+                            <br>
+                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

@@ -1,5 +1,6 @@
 <?php
 require_once("Model/database.php");
+require_once("Model/cable.php");
 class Item {
     // protected $item_id;
     protected $inventory_id;
@@ -166,17 +167,26 @@ class Item {
     }
 
     static function getItemsConnectedToCable($cable_id) {
+        $cable_ids_to_lookup = array();
+        $cables_to_lookup = Cable::getCablesConnectedToCable($cable_id);
+        foreach($cables_to_lookup as $cable_to_lookup) {
+            $cable_ids_to_lookup[] = $cable_to_lookup->getID();
+        }
+        $cable_ids_to_lookup[] = $cable_id;
         $arr = array();
         $database = Database::createConnection();
         $stmt = $database->prepare("SELECT `item_inventory_id` FROM `items_cables` WHERE `cable_id`=?");
-        $cable_id = pack("H*", str_pad($cable_id, 4, "0", STR_PAD_LEFT));
-        $stmt->bind_param("s", $cable_id);
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($id);
-        while($stmt->fetch()) {
-            $arr[] = Item::retrieveFromDatabase(Item::unpack($id));
+        foreach($cable_ids_to_lookup as $cable_to_lookup) {
+            $cable_id = pack("H*", str_pad($cable_to_lookup, 4, "0", STR_PAD_LEFT));
+            $stmt->bind_param("s", $cable_id);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($id);
+            while($stmt->fetch()) {
+                $arr[] = Item::retrieveFromDatabase(Item::unpack($id));
+            }
         }
+
         return $arr;
     }
 }
