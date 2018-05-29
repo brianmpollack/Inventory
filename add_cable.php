@@ -57,7 +57,7 @@ require_once('Controller/create_cable.php');
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" name="description" aria-describedby="description_help" placeholder="Description" value="<?php if(isset($prefill_description)) echo $prefill_description; ?>" required>
+                    <input type="text" class="form-control" id="description" name="description" aria-describedby="description_help" placeholder="Description" value="<?php if(isset($prefill_description)) echo $prefill_description; ?>">
                     <small id="description_help" class="form-text text-muted"><!--Short description of item.--></small>
                 </div>
                 <div class="form-group">

@@ -5,11 +5,6 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'save-cable') {
     $description = $_POST['description'];
     $notes = $_POST['notes'];
 
-    if($description == "") {
-        trigger_error("Description is required.");
-        exit;
-    }
-
     try {
         $cable = Cable::retrieveFromDatabase($id);
         $cable->setDescription($description);
