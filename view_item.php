@@ -2,8 +2,10 @@
 require_once('Controller/validate_logged_in.php');
 require_once('Model/item.php');
 require_once('Model/cable.php');
+require_once('Model/location.php');
 require_once('Controller/save_item.php');
 require_once('Controller/view_item.php');
+$all_locations = Location::retrieveAllFromDatabase();
 ?>
 <!doctype html>
 <html lang="en">
@@ -80,9 +82,18 @@ require_once('Controller/view_item.php');
                     <label for="notes">Notes</label>
                     <textarea class="form-control" id="notes" name="notes" placeholder="Notes" rows="5"><?php if(isset($prefill_notes)) echo $prefill_notes; ?></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select class="form-control" id="location" name="location">
+                        <option value=""> </option>
+                        <?php foreach($all_locations as $location): ?>
+                        <option value="<?php echo $location->getID(); ?>" <?php if(isset($prefill_location) && $prefill_location == $location->getID()) echo ' selected'; ?>><?php echo $location->getName(); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary" name="submit" value="save-item">Save</button>
             </form>
-            <?php if(isset($connected_cables)): ?>
+            <?php if(isset($connected_cables) && count($connected_cables) > 0): ?>
             <h3>Connected Cables</h3>
             <table class="table">
                 <thead>

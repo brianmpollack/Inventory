@@ -9,6 +9,7 @@ class Item {
     protected $serial_number;
     protected $mac_address;
     protected $notes;
+    protected $location_id;
 
     static private function pad_and_pack($str) {
         return pack("H*", str_pad($str, 6, "0", STR_PAD_LEFT));
@@ -19,7 +20,7 @@ class Item {
         return $to_return[1];
     }
 
-    function __construct($inventory_id, $description, $model_number, $serial_number, $mac_address, $notes) { //, $item_id=Null
+    function __construct($inventory_id, $description, $model_number, $serial_number, $mac_address, $notes, $location_id) { //, $item_id=Null
         // $this->item_id = $item_id;
         $this->inventory_id = $inventory_id;
         $this->description = $description;
@@ -27,13 +28,14 @@ class Item {
         $this->serial_number = $serial_number;
         $this->mac_address = $mac_address;
         $this->notes = $notes;
+        $this->location_id = $location_id;
     }
 
     function save() {
         $database = Database::createConnection();
-        $stmt = $database->prepare("UPDATE `items` SET `description`=?, `model_number`=?, `serial_number`=?, `mac_address`=?, `notes`=? WHERE `inventory_id`=? LIMIT 1");
+        $stmt = $database->prepare("UPDATE `items` SET `description`=?, `model_number`=?, `serial_number`=?, `mac_address`=?, `notes`=?, `location`=? WHERE `inventory_id`=? LIMIT 1");
         $inventory_id = Item::pad_and_pack($this->inventory_id);
-        $stmt->bind_param("ssssss", $this->description, $this->model_number, $this->serial_number, $this->mac_address, $this->notes, $inventory_id);
+        $stmt->bind_param("sssssss", $this->description, $this->model_number, $this->serial_number, $this->mac_address, $this->notes, $this->location_id, $inventory_id);
         $stmt->execute();
         if($stmt->error != '') {
             throw new Exception('Error saving item.');
@@ -44,18 +46,18 @@ class Item {
     static function retrieveFromDatabase($inventory_id) {
         $inventory_id = Item::pad_and_pack($inventory_id);
         $database = Database::createConnection();
-        $stmt = $database->prepare("SELECT `inventory_id`, `description`, `model_number`, `serial_number`, `mac_address`, `notes` FROM `items` WHERE `inventory_id`=?");
+        $stmt = $database->prepare("SELECT `inventory_id`, `description`, `model_number`, `serial_number`, `mac_address`, `notes`, `location` FROM `items` WHERE `inventory_id`=?");
         $stmt->bind_param("s", $inventory_id);
         $stmt->execute();
         $stmt->store_result();
-        $stmt->bind_result($inventory_id_from_db, $description, $model_number, $serial_number, $mac_address, $notes);
+        $stmt->bind_result($inventory_id_from_db, $description, $model_number, $serial_number, $mac_address, $notes, $location);
         $stmt->fetch();
         if($stmt->num_rows != 1) {
             trigger_error("Could not retrieve item from database.", E_USER_NOTICE);
             return Null;
         }
         $unpacked_inventory_id = Item::unpack($inventory_id_from_db);
-        return new Item($unpacked_inventory_id, $description, $model_number, $serial_number, $mac_address, $notes);
+        return new Item($unpacked_inventory_id, $description, $model_number, $serial_number, $mac_address, $notes, $location);
     }
 
     static function retrieveAllItemsFromDatabase() {
@@ -71,15 +73,15 @@ class Item {
         return $items;
     }
 
-    static function createItem($inventory_id, $description, $model_number, $serial_number, $mac_address, $notes) {
+    static function createItem($inventory_id, $description, $model_number, $serial_number, $mac_address, $notes, $location) {
         // If $inventory_id is NULL or empty string we will generate one
         if(strlen($inventory_id) > 6) {
             throw new Exception('Inventory ID must be 6 or fewer characters.');
         }
         $database = Database::createConnection();
         if($inventory_id != NULL && $inventory_id != '') {
-            $stmt = $database->prepare("INSERT INTO `items` (`inventory_id`, `description`, `model_number`, `serial_number`, `mac_address`, `notes`) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", Item::pad_and_pack($inventory_id), $description, $model_number, $serial_number, $mac_address, $notes);
+            $stmt = $database->prepare("INSERT INTO `items` (`inventory_id`, `description`, `model_number`, `serial_number`, `mac_address`, `notes`, `location`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssss", Item::pad_and_pack($inventory_id), $description, $model_number, $serial_number, $mac_address, $notes, $location);
             if(!$stmt->execute()) {
                 throw new Exception('Could not execute MySQL query.');
             }
@@ -100,8 +102,8 @@ class Item {
                 $stmt->bind_result($next_inventory_id);
                 $stmt->fetch();
 
-                $stmt = $database->prepare("INSERT INTO `items` (`inventory_id`, `description`, `model_number`, `serial_number`, `mac_address`, `notes`) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssssss", Item::pad_and_pack($next_inventory_id), $description, $model_number, $serial_number, $mac_address, $notes);
+                $stmt = $database->prepare("INSERT INTO `items` (`inventory_id`, `description`, `model_number`, `serial_number`, `mac_address`, `notes`, `location`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("sssssss", Item::pad_and_pack($next_inventory_id), $description, $model_number, $serial_number, $mac_address, $notes, $location);
 
                 $max_insertion_tries --;
             }
@@ -152,6 +154,13 @@ class Item {
         $this->notes = $notes;
     }
 
+    function getLocation() {
+        return $this->location_id;
+    }
+    function setLocation($location) {
+        $this->location_id = $location;
+    }
+
     static function searchForItem($query) {
         $items = array();
         $database = Database::createConnection();
@@ -193,7 +202,7 @@ class Item {
     static function getAllItemsInLocation($location_id) {
         $items = array();
         $database = Database::createConnection();
-        $stmt = $database->prepare("SELECT `item_inventory_id` FROM `items_locations` WHERE `location_id`=?");
+        $stmt = $database->prepare("SELECT `inventory_id` FROM `items` WHERE `location`=?");
         $stmt->bind_param("s", $location_id);
         $stmt->execute();
         $stmt->store_result();

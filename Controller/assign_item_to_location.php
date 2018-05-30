@@ -1,5 +1,5 @@
 <?php
-require_once("Model/item-location.php");
+require_once("Model/item.php");
 if(isset($_POST['submit']) && $_POST['submit'] == 'save-item-location') {
     $item_inventory_id = $_POST['item_id'];
     $prefill_location_id = $location_id = $_POST['location_id'];
@@ -9,7 +9,9 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'save-item-location') {
     }
 
     try {
-        ItemLocation::create($item_inventory_id, $location_id);
+        $item = Item::retrieveFromDatabase($item_inventory_id);
+        $item->setLocation($location_id);
+        $item->save();
     } catch(Exception $e) {
         $user_error = "Could not save.<br>".$e->getMessage();
     }

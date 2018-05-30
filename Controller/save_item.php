@@ -7,6 +7,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'save-item') {
     $serial_number = $_POST['serial'];
     $mac_address = $_POST['mac_address'];
     $notes = $_POST['notes'];
+    $location = $_POST['location'];
 
     if($description == "") {
         trigger_error("Description is required.");
@@ -20,6 +21,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'save-item') {
         $item->setSerialNumber($serial_number);
         $item->setMacAddress($mac_address);
         $item->setNotes($notes);
+        $item->setLocation($location);
         $item->save();
     } catch(Exception $e) {
         $user_error = "Could not save item.<br>".$e->getMessage();
