@@ -29,6 +29,9 @@ class Item {
         $this->mac_address = $mac_address;
         $this->notes = $notes;
         $this->location_id = $location_id;
+        if($this->location_id == '') {
+            $this->location_id = NULL;
+        }
     }
 
     function save() {
@@ -159,6 +162,9 @@ class Item {
     }
     function setLocation($location) {
         $this->location_id = $location;
+        if($this->location_id == '') {
+            $this->location_id = NULL;
+        }
     }
 
     static function searchForItem($query) {
