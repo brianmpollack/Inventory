@@ -3,6 +3,7 @@ require_once('Controller/validate_logged_in.php');
 require_once('Model/item.php');
 require_once('Model/cable.php');
 require_once('Model/location.php');
+require_once('Model/transaction.php');
 require_once('Controller/save_item.php');
 require_once('Controller/view_item.php');
 $all_locations = Location::retrieveAllFromDatabase();
@@ -91,37 +92,86 @@ $all_locations = Location::retrieveAllFromDatabase();
                         <?php endforeach; ?>
                     </select>
                 </div>
+                
+                <?php if(isset($connected_cables) && count($connected_cables) > 0): ?>
+                <h3>Connected Cables</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Connected Items</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($connected_cables as $connected_cable): ?>
+                        <tr>
+                            <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getID(); ?></a></td>
+                            <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getDescription(); ?></a></td>
+                            <td>
+                                <?php $connected_items = Item::getItemsConnectedToCable($connected_cable->getID()); ?>
+                                <?php foreach($connected_items as $connected_item): ?>
+                                <?php if($connected_item->getInventoryID() != $item->getInventoryID()): ?>
+                                <a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getDescription(); ?></a>
+                                <br>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php endif; ?>
+
+                <h4>Transactions</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Price</th>
+                            <th>Notes</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if( isset($transactions) ): ?>
+                        <?php foreach( $transactions as $transaction ): ?>
+                        <tr>
+                            <td><input type="date" class="form-control" name="transaction-date[<?php echo $transaction->getID(); ?>]" value="<?php echo $transaction->getDate(); ?>"></td>
+                            <td><input type="text" class="form-control" name="transaction-location[<?php echo $transaction->getID(); ?>]" value="<?php echo $transaction->getLocation(); ?>"></td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">$</div>
+                                    </div>
+                                    <input type="text" class="form-control" name="transaction-price[<?php echo $transaction->getID(); ?>]" value="<?php echo $transaction->getPrice(); ?>">
+                                </div>
+                            </td>
+                            <td><textarea class="form-control" name="transaction-notes[<?php echo $transaction->getID(); ?>]"><?php echo $transaction->getNotes(); ?></textarea></td>
+                            <td><input type="checkbox" class="form-check-input" name="transaction-delete[]" value="<?php echo $transaction->getID(); ?>"></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                        <tr>
+                            <td><input type="date" class="form-control" name="transaction-date-new"></td>
+                            <td><input type="text" class="form-control" name="transaction-location-new"></td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">$</div>
+                                    </div>
+                                    <input type="text" class="form-control" name="transaction-price-new">
+                                </div>
+                            </td>
+                            <td><textarea class="form-control" name="transaction-notes-new"></textarea></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <button type="submit" class="btn btn-primary" name="submit" value="save-item">Save</button>
             </form>
-            <?php if(isset($connected_cables) && count($connected_cables) > 0): ?>
-            <h3>Connected Cables</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Description</th>
-                        <th>Connected Items</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($connected_cables as $connected_cable): ?>
-                    <tr>
-                        <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getID(); ?></a></td>
-                        <td><a href="./view_cable.php?id=<?php echo urlencode($connected_cable->getID()); ?>"><?php echo $connected_cable->getDescription(); ?></a></td>
-                        <td>
-                            <?php $connected_items = Item::getItemsConnectedToCable($connected_cable->getID()); ?>
-                            <?php foreach($connected_items as $connected_item): ?>
-                            <?php if($connected_item->getInventoryID() != $item->getInventoryID()): ?>
-                            <a href="./view_item.php?inventory_id=<?php echo urlencode($connected_item->getInventoryID()); ?>"><?php echo $connected_item->getDescription(); ?></a>
-                            <br>
-                            <?php endif; ?>
-                            <?php endforeach; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <?php endif; ?>
+
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
