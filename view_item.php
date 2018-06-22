@@ -4,6 +4,7 @@ require_once('Model/item.php');
 require_once('Model/cable.php');
 require_once('Model/location.php');
 require_once('Model/transaction.php');
+require_once('Model/maintenance.php');
 require_once('Controller/save_item.php');
 require_once('Controller/view_item.php');
 $all_locations = Location::retrieveAllFromDatabase();
@@ -190,8 +191,40 @@ $all_locations = Location::retrieveAllFromDatabase();
                 </table>
                 <?php endif; ?>
                 <input type="file" class="form-control" name="file-new">
+                
+
+                <h4>Maintenance</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Notes</th>
+                            <th>Completed</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if( isset($maintenance) ): ?>
+                        <?php foreach( $maintenance as $maintenance_item ): ?>
+                        <tr>
+                            <td><input type="date" class="form-control" name="maintenance-date[<?php echo $maintenance_item->getID(); ?>]" value="<?php echo $maintenance_item->getDueDate(); ?>"></td>
+                            <td><textarea class="form-control" name="maintenance-notes[<?php echo $maintenance_item->getID(); ?>]"><?php echo $maintenance_item->getNotes(); ?></textarea></td>
+                            <td><input type="checkbox" class="form-check-input" name="maintenance-completed[<?php echo $maintenance_item->getID(); ?>]" value="1" <?php if($maintenance_item->getCompleted()) echo 'checked'; ?>></td>
+                            <td><input type="checkbox" class="form-check-input" name="maintenance-delete[]" value="<?php echo $maintenance_item->getID(); ?>"></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                        <tr>
+                            <td><input type="date" class="form-control" name="maintenance-date-new"></td>
+                            <td><textarea class="form-control" name="maintenance-notes-new"></textarea></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <button type="submit" class="btn btn-primary" name="submit" value="save-item">Save</button>
             </form>
+
 
         </div>
         <script src="vendor/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

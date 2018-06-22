@@ -17,5 +17,6 @@ if(isset($_GET['inventory_id'])) {
         }
         $transactions = Transaction::retrieveAllForItem($item->getInventoryID());
         $files = $item->getFilenames();
+        $maintenance = Maintenance::retrieveAllForItem($item->getInventoryID());
     }
 }

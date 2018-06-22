@@ -81,6 +81,42 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'save-item') {
                 $item->deleteFile($file_id);
             }
         }
+
+        // Handle maintenance
+        if( isset($_POST['maintenance-date-new']) 
+            && isset($_POST['maintenance-notes-new'])
+            && (
+                $_POST['maintenance-notes-new'] != ""
+            )
+        ) {
+            Maintenance::createMaintenance(
+                $item->getInventoryID(),
+                $_POST['maintenance-date-new'],
+                $_POST['maintenance-notes-new']
+            );
+        }
+        if( isset($_POST['maintenance-date'])
+            && isset($_POST['maintenance-notes'])
+        ) {
+            foreach( $_POST['maintenance-date'] as $maintenance_id => $date_value ) {
+                if(! ( isset($_POST['maintenance-notes'][$maintenance_id])
+                ) ) {
+                    // Not all the fields were set, so do not save this entry
+                    continue;
+                }
+                $maintenance = Maintenance::retrieveFromDatabase($maintenance_id);
+                $maintenance->setDueDate($date_value);
+                $maintenance->setNotes($_POST['maintenance-notes'][$maintenance_id]);
+                $maintenance->setCompleted($_POST['maintenance-completed'][$maintenance_id] == '1');
+                $maintenance->save();
+            }
+        }
+        if( isset($_POST['maintenance-delete']) ) {
+            foreach( $_POST['maintenance-delete'] as $maintenance_id ) {
+                $maintenance = Maintenance::retrieveFromDatabase($maintenance_id);
+                $maintenance->delete();
+            }
+        }
         
     } catch(Exception $e) {
         $user_error = "Could not save item.<br>".$e->getMessage();
