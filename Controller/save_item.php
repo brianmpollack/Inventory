@@ -71,6 +71,17 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'save-item') {
                 $transaction->delete();
             }
         }
+
+        // Handle file upload
+        if( isset($_FILES['file-new']) && isset($_FILES['file-new']['tmp_name']) && $_FILES['file-new']['tmp_name'] != '' ) {
+            $item->addFile($_FILES['file-new']['tmp_name'], $_FILES['file-new']['name']);
+        }
+        if( isset($_POST['file-delete']) ) {
+            foreach( $_POST['file-delete'] as $file_id ) {
+                $item->deleteFile($file_id);
+            }
+        }
+        
     } catch(Exception $e) {
         $user_error = "Could not save item.<br>".$e->getMessage();
     }

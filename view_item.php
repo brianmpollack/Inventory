@@ -52,7 +52,7 @@ $all_locations = Location::retrieveAllFromDatabase();
             </div>
             <?php endif; ?>
             <h2>View Item</h2>
-            <form method="post" action="">
+            <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="inventory_id">Inventory ID</label>
                     <input type="text" class="form-control" id="inventory_id" name="inventory_id" aria-describedby="inventory_id_help" placeholder="Inventory ID" maxlength="6" value="<?php if(isset($prefill_inventory_id)) echo $prefill_inventory_id; ?>" disabled>
@@ -169,6 +169,27 @@ $all_locations = Location::retrieveAllFromDatabase();
                         </tr>
                     </tbody>
                 </table>
+
+                <h4>Files</h4>
+                <?php if( isset($files) ): ?>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach( $files as $file_id=>$filename ): ?>
+                        <tr>
+                            <td><a href="<?php echo $filename; ?>" target="_blank"><?php echo basename($filename); ?></a></td>
+                            <td><input type="checkbox" class="form-check-input" name="file-delete[]" value="<?php echo $file_id; ?>"></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php endif; ?>
+                <input type="file" class="form-control" name="file-new">
                 <button type="submit" class="btn btn-primary" name="submit" value="save-item">Save</button>
             </form>
 

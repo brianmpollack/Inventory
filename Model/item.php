@@ -167,6 +167,87 @@ class Item {
         }
     }
 
+    function addFile($uploaded_file_tmp_name, $uploaded_file_name) {
+        // Moves file from current location 
+        $file_base_directory = 'uploads/'.$this->inventory_id.'/';
+        $save_filename = basename($uploaded_file_name);
+        $save_prefix = '';
+        $max_duplicate_attempts = 15;
+        if( !file_exists($file_base_directory) ) {
+            if( !mkdir($file_base_directory) ) {
+                throw new Exception("Cannot create directory for item.");
+            }
+        }
+        while( file_exists($file_base_directory.$save_prefix.$save_filename) && ($max_duplicate_attempts--) >= 0 ) {
+            if( is_int($save_prefix) ) {
+                $save_prefix += 1;
+            } else {
+                $save_prefix .= '2';
+            }
+        }
+        if( file_exists($file_base_directory.$save_prefix.$save_filename) ) {
+            throw new Exception("File exists.");
+        }
+        if( !move_uploaded_file($uploaded_file_tmp_name, $file_base_directory.$save_prefix.$save_filename)) {
+            throw new Exception("Cannot move file to its final destination.");
+        }
+
+        $database = Database::createConnection();
+        $stmt = $database->prepare("INSERT INTO `files` (`item_id`, `filename`) VALUES (?, ?)");
+        $inventory_id = Item::pad_and_pack($this->inventory_id);
+        $save_final_filename = $file_base_directory.$save_prefix.$save_filename;
+        $stmt->bind_param("ss", $inventory_id, $save_final_filename);
+        $stmt->execute();
+        if($stmt->error != '') {
+            throw new Exception('Error recording filename in database.');
+        }
+
+    }
+
+    function deleteFile($file_id) {
+        $database = Database::createConnection();
+
+        // Get filename
+        $stmt = $database->prepare("SELECT `filename` FROM `files` WHERE `file_id`=?");
+        $stmt->bind_param("s", $file_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($filename);
+        if(!$stmt->fetch()) {
+            throw new Exception('Error retrieving filename from database.');
+        }
+
+        $stmt = $database->prepare("DELETE FROM `files` WHERE `file_id`=? LIMIT 1");
+        $stmt->bind_param("s", $file_id);
+        $stmt->execute();
+        if($stmt->error != '') {
+            throw new Exception('Error removing filename from database.');
+        }
+
+        if( !file_exists($filename) ) {
+            throw new Exception("File does not exist.");
+        }
+
+        if( !unlink($filename) ) {
+            throw new Exception("Cannot delete file from storage.");
+        }
+    }
+
+    function getFilenames() {
+        $arr = array();
+        $database = Database::createConnection();
+        $stmt = $database->prepare("SELECT `file_id`, `filename` FROM `files` WHERE `item_id`=?");
+        $packed_id = Item::pad_and_pack($this->inventory_id);
+        $stmt->bind_param("s", $packed_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($file_id, $filename);
+        while($stmt->fetch()) {
+            $arr[$file_id] = $filename;
+        }
+        return $arr;
+    }
+
     static function searchForItem($query) {
         $items = array();
         $database = Database::createConnection();

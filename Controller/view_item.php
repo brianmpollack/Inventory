@@ -16,5 +16,6 @@ if(isset($_GET['inventory_id'])) {
             $connected_cables[] = Cable::retrieveFromDatabase($item_cable->getCableID());
         }
         $transactions = Transaction::retrieveAllForItem($item->getInventoryID());
+        $files = $item->getFilenames();
     }
 }
